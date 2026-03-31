@@ -6,29 +6,51 @@ namespace HelloComputer;
 public static class TextToSpeech
 {
     public static async Task SpeakAsync(
-        string text, string voiceName = "en-US-JennyNeural", string? endpointId = null)
+        string text, string voiceName = "en-US-JennyNeural", string? speakerProfileId = null)
     {
         var config = SpeechHelper.GetSpeechConfig();
-        ConfigureVoice(config, voiceName, endpointId);
+        speakerProfileId ??= Environment.GetEnvironmentVariable("AZURE_SPEECH_SPEAKER_PROFILE_ID");
 
-        using var audioConfig = AudioConfig.FromDefaultSpeakerOutput();
-        using var synthesizer = new SpeechSynthesizer(config, audioConfig);
-
-        var result = await synthesizer.SpeakTextAsync(text);
+        SpeechSynthesisResult result;
+        if (!string.IsNullOrEmpty(speakerProfileId))
+        {
+            using var audioConfig = AudioConfig.FromDefaultSpeakerOutput();
+            using var synthesizer = new SpeechSynthesizer(config, audioConfig);
+            var ssml = BuildPersonalVoiceSsml(text, speakerProfileId, voiceName);
+            result = await synthesizer.SpeakSsmlAsync(ssml);
+        }
+        else
+        {
+            config.SpeechSynthesisVoiceName = voiceName;
+            using var audioConfig = AudioConfig.FromDefaultSpeakerOutput();
+            using var synthesizer = new SpeechSynthesizer(config, audioConfig);
+            result = await synthesizer.SpeakTextAsync(text);
+        }
         HandleResult(result);
     }
 
     public static async Task SynthesizeToWavAsync(
         string text, string outputPath, string voiceName = "en-US-JennyNeural",
-        string? endpointId = null)
+        string? speakerProfileId = null)
     {
         var config = SpeechHelper.GetSpeechConfig();
-        ConfigureVoice(config, voiceName, endpointId);
+        speakerProfileId ??= Environment.GetEnvironmentVariable("AZURE_SPEECH_SPEAKER_PROFILE_ID");
 
-        using var audioConfig = AudioConfig.FromWavFileOutput(outputPath);
-        using var synthesizer = new SpeechSynthesizer(config, audioConfig);
-
-        var result = await synthesizer.SpeakTextAsync(text);
+        SpeechSynthesisResult result;
+        if (!string.IsNullOrEmpty(speakerProfileId))
+        {
+            using var audioConfig = AudioConfig.FromWavFileOutput(outputPath);
+            using var synthesizer = new SpeechSynthesizer(config, audioConfig);
+            var ssml = BuildPersonalVoiceSsml(text, speakerProfileId, voiceName);
+            result = await synthesizer.SpeakSsmlAsync(ssml);
+        }
+        else
+        {
+            config.SpeechSynthesisVoiceName = voiceName;
+            using var audioConfig = AudioConfig.FromWavFileOutput(outputPath);
+            using var synthesizer = new SpeechSynthesizer(config, audioConfig);
+            result = await synthesizer.SpeakTextAsync(text);
+        }
         HandleResult(result);
     }
 
@@ -53,16 +75,18 @@ public static class TextToSpeech
         }
     }
 
-    private static void ConfigureVoice(
-        SpeechConfig config, string voiceName, string? endpointId)
+    private static string BuildPersonalVoiceSsml(
+        string text, string speakerProfileId, string voiceName = "DragonLatestNeural")
     {
-        var resolvedEndpoint = endpointId
-            ?? Environment.GetEnvironmentVariable("AZURE_SPEECH_ENDPOINT_ID");
-
-        if (!string.IsNullOrEmpty(resolvedEndpoint))
-            config.EndpointId = resolvedEndpoint;
-
-        config.SpeechSynthesisVoiceName = voiceName;
+        var escaped = System.Security.SecurityElement.Escape(text);
+        return "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' "
+             + "xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='en-US'>"
+             + $"<voice name='{voiceName}'>"
+             + $"<mstts:ttsembedding speakerProfileId='{speakerProfileId}'>"
+             + escaped
+             + "</mstts:ttsembedding>"
+             + "</voice>"
+             + "</speak>";
     }
 
     private static void HandleResult(SpeechSynthesisResult result)

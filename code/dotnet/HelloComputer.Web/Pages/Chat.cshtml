@@ -1,0 +1,58 @@
+@page
+@model ChatModel
+@{
+    ViewData["Title"] = "Chat with AI";
+}
+
+<h2>Chat with AI</h2>
+<p>Type a message, send it to a language model, and hear the response spoken back.</p>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="voiceName" class="form-label">Response voice</label>
+        <select class="form-select" id="voiceName" name="voiceName">
+            @foreach (var voice in Model.Voices)
+            {
+                <option value="@voice.Name"
+                        selected="@(voice.Name == Model.VoiceName)">
+                    @voice.LocalName (@voice.Gender) -- @voice.Name
+                </option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="systemPrompt" class="form-label">System prompt (optional)</label>
+        <textarea class="form-control" id="systemPrompt" name="systemPrompt" rows="2">@Model.SystemPrompt</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="userMessage" class="form-label">Your message</label>
+        <textarea class="form-control" id="userMessage" name="userMessage" rows="3" required>@Model.UserMessage</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send to AI</button>
+</form>
+
+@if (Model.AiResponse != null)
+{
+    <div class="alert alert-info status">
+        <strong>You said:</strong> @Model.UserMessage
+    </div>
+    <div class="alert alert-success status">
+        <strong>AI responded:</strong> @Model.AiResponse
+    </div>
+}
+
+@if (Model.AudioBase64 != null)
+{
+    <div class="status">
+        <audio controls autoplay>
+            <source src="data:audio/wav;base64,@Model.AudioBase64" type="audio/wav" />
+        </audio>
+    </div>
+}
+
+@if (Model.Error != null)
+{
+    <div class="alert alert-danger status">
+        <strong>Error:</strong> @Model.Error
+    </div>
+}

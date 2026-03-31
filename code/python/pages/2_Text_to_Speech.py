@@ -37,13 +37,13 @@ voice_options = {
 selected_label = st.selectbox("Voice", options=list(voice_options.keys()))
 voice_name = voice_options[selected_label]
 
-# ── Custom endpoint (optional) ─────────────────────────────────────────────
-endpoint_id = st.text_input(
-    "Custom Neural Voice endpoint ID (optional)",
-    value=os.environ.get("AZURE_SPEECH_ENDPOINT_ID", ""),
-    help="Leave blank to use a prebuilt voice. Set this to use a deployed Custom Neural Voice.",
+# ── Personal voice (optional) ─────────────────────────────────────────────
+speaker_profile_id = st.text_input(
+    "Personal Voice speaker profile ID (optional)",
+    value=os.environ.get("AZURE_SPEECH_SPEAKER_PROFILE_ID", ""),
+    help="Set this to use a Personal Voice. Uses SSML with DragonLatestNeural. Overrides endpoint ID.",
 )
-endpoint_id = endpoint_id.strip() or None
+speaker_profile_id = speaker_profile_id.strip() or None
 
 # ── Text input and synthesis ────────────────────────────────────────────────
 text = st.text_area(
@@ -57,7 +57,8 @@ if st.button("Speak") and text.strip():
         try:
             from speech_lib import synthesize_to_bytes
             audio_bytes = synthesize_to_bytes(
-                text, voice_name=voice_name, endpoint_id=endpoint_id,
+                text, voice_name=voice_name,
+                speaker_profile_id=speaker_profile_id,
             )
             st.audio(audio_bytes, format="audio/wav")
             st.download_button(

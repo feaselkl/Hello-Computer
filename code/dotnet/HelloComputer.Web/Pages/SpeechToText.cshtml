@@ -1,0 +1,30 @@
+@page
+@model SpeechToTextModel
+@{
+    ViewData["Title"] = "Speech to Text";
+}
+
+<h2>Speech to Text</h2>
+<p>Upload a WAV file to transcribe it using Azure AI Speech.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="wavFile" class="form-label">WAV file</label>
+        <input type="file" class="form-control" id="wavFile" name="wavFile" accept=".wav" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Transcribe</button>
+</form>
+
+@if (Model.Transcription != null)
+{
+    <div class="alert alert-success status">
+        <strong>Transcription:</strong> @Model.Transcription
+    </div>
+}
+
+@if (Model.Error != null)
+{
+    <div class="alert alert-danger status">
+        <strong>Error:</strong> @Model.Error
+    </div>
+}

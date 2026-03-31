@@ -21,18 +21,22 @@ def cmd_stt(args: argparse.Namespace) -> None:
 def cmd_tts(args: argparse.Namespace) -> None:
     from speech_lib import speak_text, synthesize_to_wav
 
-    endpoint_id = args.endpoint_id  # None if not provided; env var checked in library
+    speaker_profile_id = args.speaker_profile_id  # None if not provided; env var checked in library
 
     if args.output:
         print(f"Synthesizing to {args.output} ...")
         synthesize_to_wav(
             args.text, args.output,
-            voice_name=args.voice, endpoint_id=endpoint_id,
+            voice_name=args.voice,
+            speaker_profile_id=speaker_profile_id,
         )
         print(f"Saved to {args.output}")
     else:
         print("Speaking ...")
-        speak_text(args.text, voice_name=args.voice, endpoint_id=endpoint_id)
+        speak_text(
+            args.text, voice_name=args.voice,
+            speaker_profile_id=speaker_profile_id,
+        )
         print("Done.")
 
 
@@ -67,8 +71,8 @@ def main() -> None:
         help="Voice name (default: en-US-JennyNeural)",
     )
     tts.add_argument(
-        "--endpoint-id", "-e",
-        help="Custom Neural Voice endpoint ID (or set AZURE_SPEECH_ENDPOINT_ID)",
+        "--speaker-profile-id", "-s",
+        help="Personal Voice speaker profile ID (or set AZURE_SPEECH_SPEAKER_PROFILE_ID)",
     )
 
     args = parser.parse_args()

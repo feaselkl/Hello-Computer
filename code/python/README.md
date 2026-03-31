@@ -57,6 +57,14 @@ Text-to-speech with a specific voice:
 uv run python cli.py tts --text "Hello, Computer!" --voice en-US-GuyNeural
 ```
 
+Text-to-speech with a Personal Voice:
+
+```bash
+uv run python cli.py tts --text "Hello, Computer!" --speaker-profile-id <your-profile-id>
+```
+
+You can also set `AZURE_SPEECH_SPEAKER_PROFILE_ID` in your `.env` file instead of passing the flag each time.
+
 ## Streamlit Dashboard
 
 ```bash

@@ -10,11 +10,8 @@ from .config import get_speech_config
 def _configure_voice(
     config: speechsdk.SpeechConfig,
     voice_name: str,
-    endpoint_id: str | None = None,
 ) -> None:
-    """Set voice name and optional custom endpoint on a SpeechConfig."""
-    if endpoint_id:
-        config.endpoint_id = endpoint_id
+    """Set voice name on a SpeechConfig."""
     config.speech_synthesis_voice_name = voice_name
 
 
@@ -31,24 +28,58 @@ def _check_synthesis(result: speechsdk.SpeechSynthesisResult) -> None:
     raise RuntimeError(f"Unexpected synthesis result: {result.reason}")
 
 
-def _resolve_endpoint_id(endpoint_id: str | None) -> str | None:
-    """Use the provided endpoint_id or fall back to the environment variable."""
-    return endpoint_id or os.environ.get("AZURE_SPEECH_ENDPOINT_ID")
+def _resolve_speaker_profile_id(speaker_profile_id: str | None) -> str | None:
+    """Use the provided speaker_profile_id or fall back to the environment variable."""
+    return speaker_profile_id or os.environ.get("AZURE_SPEECH_SPEAKER_PROFILE_ID")
+
+
+def _build_personal_voice_ssml(
+    text: str,
+    speaker_profile_id: str,
+    voice_name: str = "DragonLatestNeural",
+) -> str:
+    """Build SSML for personal voice synthesis."""
+    # Escape XML special characters in user text
+    escaped = (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&apos;")
+    )
+    return (
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' "
+        "xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='en-US'>"
+        f"<voice name='{voice_name}'>"
+        f"<mstts:ttsembedding speakerProfileId='{speaker_profile_id}'>"
+        f"{escaped}"
+        "</mstts:ttsembedding>"
+        "</voice>"
+        "</speak>"
+    )
 
 
 def speak_text(
     text: str,
     voice_name: str = "en-US-JennyNeural",
-    endpoint_id: str | None = None,
+    speaker_profile_id: str | None = None,
 ) -> None:
     """Synthesize text and play through the default speaker."""
     config = get_speech_config()
-    _configure_voice(config, voice_name, _resolve_endpoint_id(endpoint_id))
+    speaker_profile_id = _resolve_speaker_profile_id(speaker_profile_id)
     audio = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
-    synthesizer = speechsdk.SpeechSynthesizer(
-        speech_config=config, audio_config=audio
-    )
-    result = synthesizer.speak_text_async(text).get()
+    if speaker_profile_id:
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=config, audio_config=audio
+        )
+        ssml = _build_personal_voice_ssml(text, speaker_profile_id, voice_name)
+        result = synthesizer.speak_ssml_async(ssml).get()
+    else:
+        _configure_voice(config, voice_name)
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=config, audio_config=audio
+        )
+        result = synthesizer.speak_text_async(text).get()
     _check_synthesis(result)
 
 
@@ -56,31 +87,47 @@ def synthesize_to_wav(
     text: str,
     output_path: str,
     voice_name: str = "en-US-JennyNeural",
-    endpoint_id: str | None = None,
+    speaker_profile_id: str | None = None,
 ) -> None:
     """Synthesize text and save to a WAV file."""
     config = get_speech_config()
-    _configure_voice(config, voice_name, _resolve_endpoint_id(endpoint_id))
+    speaker_profile_id = _resolve_speaker_profile_id(speaker_profile_id)
     audio = speechsdk.audio.AudioOutputConfig(filename=output_path)
-    synthesizer = speechsdk.SpeechSynthesizer(
-        speech_config=config, audio_config=audio
-    )
-    result = synthesizer.speak_text_async(text).get()
+    if speaker_profile_id:
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=config, audio_config=audio
+        )
+        ssml = _build_personal_voice_ssml(text, speaker_profile_id, voice_name)
+        result = synthesizer.speak_ssml_async(ssml).get()
+    else:
+        _configure_voice(config, voice_name)
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=config, audio_config=audio
+        )
+        result = synthesizer.speak_text_async(text).get()
     _check_synthesis(result)
 
 
 def synthesize_to_bytes(
     text: str,
     voice_name: str = "en-US-JennyNeural",
-    endpoint_id: str | None = None,
+    speaker_profile_id: str | None = None,
 ) -> bytes:
     """Synthesize text and return WAV audio bytes."""
     config = get_speech_config()
-    _configure_voice(config, voice_name, _resolve_endpoint_id(endpoint_id))
-    synthesizer = speechsdk.SpeechSynthesizer(
-        speech_config=config, audio_config=None
-    )
-    result = synthesizer.speak_text_async(text).get()
+    speaker_profile_id = _resolve_speaker_profile_id(speaker_profile_id)
+    if speaker_profile_id:
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=config, audio_config=None
+        )
+        ssml = _build_personal_voice_ssml(text, speaker_profile_id, voice_name)
+        result = synthesizer.speak_ssml_async(ssml).get()
+    else:
+        _configure_voice(config, voice_name)
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=config, audio_config=None
+        )
+        result = synthesizer.speak_text_async(text).get()
     _check_synthesis(result)
     return result.audio_data
 

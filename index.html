@@ -448,33 +448,37 @@ uv run python cli.py tts --text "Hello, Computer!"
 				</section>
 
 				<section data-background-image="presentation/assets/background/voice.jpg" data-background-opacity="0.2">
-					<h3>Using Your Custom Voice in Code</h3>
+					<h3>Using Personal Voice in Code</h3>
 
-					<p>Once deployed, you get an <strong>endpoint ID</strong>. Use it with the same TTS code:</p>
+					<p>Once created, you get a <strong>speaker profile ID</strong>. Use it with SSML and a base model voice:</p>
 
-					<pre><code class="csharp">// Set the custom endpoint before the voice name
-config.EndpointId = "your-endpoint-id-guid";
-config.SpeechSynthesisVoiceName = "your-custom-voice-name";
+					<pre><code class="csharp">var ssml = @"&lt;speak version='1.0'
+  xmlns='http://www.w3.org/2001/10/synthesis'
+  xmlns:mstts='http://www.w3.org/2001/mstts'
+  xml:lang='en-US'&gt;
+  &lt;voice name='DragonLatestNeural'&gt;
+    &lt;mstts:ttsembedding
+      speakerProfileId='your-speaker-profile-id'&gt;
+      Hello from my personal voice!
+    &lt;/mstts:ttsembedding&gt;
+  &lt;/voice&gt;&lt;/speak&gt;";
+await synthesizer.SpeakSsmlAsync(ssml);</code></pre>
 
-using var synthesizer =
-    new SpeechSynthesizer(config, audioConfig);
-await synthesizer.SpeakTextAsync("Hello from my custom voice!");</code></pre>
-
-					<p>Set <code>AZURE_SPEECH_ENDPOINT_ID</code> in your <code>.env</code> file, or pass <code>--endpoint-id</code> on the CLI.</p>
+					<p>Set <code>AZURE_SPEECH_SPEAKER_PROFILE_ID</code> in your <code>.env</code> file, or pass <code>--speaker-profile-id</code> on the CLI.</p>
 				</section>
 
 				<section data-background-image="presentation/assets/background/demo.jpg" data-background-opacity="0.2">
 					<h3>Demo Time</h3>
 
-					<p>Using a deployed Custom Neural Voice Lite with our demo apps.</p>
+					<p>Using a Personal Voice with our demo apps.</p>
 
-					<pre><code class="bash"># .NET -- custom voice
-dotnet run -- tts --text "Hello from my custom voice!" \
-    --voice my-custom-voice --endpoint-id &lt;guid&gt;
+					<pre><code class="bash"># .NET -- personal voice
+dotnet run -- tts --text "Hello from my personal voice!" \
+    --speaker-profile-id &lt;id&gt;
 
-# Python -- custom voice
-uv run python cli.py tts --text "Hello from my custom voice!" \
-    --voice my-custom-voice --endpoint-id &lt;guid&gt;</code></pre>
+# Python -- personal voice
+uv run python cli.py tts --text "Hello from my personal voice!" \
+    --speaker-profile-id &lt;id&gt;</code></pre>
 				</section>
 
 				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">

@@ -1,0 +1,50 @@
+@page
+@model TextToSpeechModel
+@{
+    ViewData["Title"] = "Text to Speech";
+}
+
+<h2>Text to Speech</h2>
+<p>Type text below and hear it spoken in a neural voice.</p>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="voiceName" class="form-label">Voice</label>
+        <select class="form-select" id="voiceName" name="voiceName">
+            @foreach (var voice in Model.Voices)
+            {
+                <option value="@voice.Name"
+                        selected="@(voice.Name == Model.VoiceName)">
+                    @voice.LocalName (@voice.Gender) -- @voice.Name
+                </option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="speakerProfileId" class="form-label">Personal Voice speaker profile ID (optional)</label>
+        <input type="text" class="form-control" id="speakerProfileId" name="speakerProfileId"
+               value="@Model.SpeakerProfileId"
+               placeholder="Leave blank to use the selected prebuilt voice" />
+    </div>
+    <div class="mb-3">
+        <label for="text" class="form-label">Text to speak</label>
+        <textarea class="form-control" id="text" name="text" rows="4" required>@Model.Text</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Speak</button>
+</form>
+
+@if (Model.AudioBase64 != null)
+{
+    <div class="status">
+        <audio controls autoplay>
+            <source src="data:audio/wav;base64,@Model.AudioBase64" type="audio/wav" />
+        </audio>
+    </div>
+}
+
+@if (Model.Error != null)
+{
+    <div class="alert alert-danger status">
+        <strong>Error:</strong> @Model.Error
+    </div>
+}

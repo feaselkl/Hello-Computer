@@ -25,18 +25,26 @@ uv run streamlit run app.py
 
 ### .NET Demos
 
-See [code/dotnet/README.md](code/dotnet/README.md) for setup and usage instructions. The .NET demos include a CLI tool for speech-to-text, text-to-speech, and voice listing.
+See [code/dotnet/README.md](code/dotnet/README.md) for setup and usage instructions. The .NET demos include a CLI tool for speech-to-text, text-to-speech, and voice listing, plus a web application with the same three demos as the Python Streamlit dashboard.
 
-**Requirements:** .NET 9.0 SDK, an Azure AI Speech resource.
+**Requirements:** .NET 9.0 SDK, an Azure AI Speech resource. For the Chat with AI demo: an Azure OpenAI deployment.
 
 ```bash
-cd code/dotnet/HelloComputer
-cp ../.env.example .env
-# Edit .env with your Azure Speech key and region
+cd code/dotnet
+cp .env.example .env
+# Edit .env with your Azure Speech key, region, and optionally Azure OpenAI credentials
+
+# CLI demos
+cd HelloComputer
 dotnet restore
 dotnet run -- stt
 dotnet run -- tts --text "Hello, Computer!"
 dotnet run -- tts --text "Hello, Computer!" --voice en-US-AmandaMultilingualNeural
+
+# Web application
+cd ../HelloComputer.Web
+dotnet restore
+dotnet run
 ```
 
 ### Voices

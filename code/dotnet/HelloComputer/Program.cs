@@ -74,18 +74,18 @@ class Program
 
         var voice = GetOption(args, "--voice") ?? GetOption(args, "-v") ?? "en-US-JennyNeural";
         var output = GetOption(args, "--output") ?? GetOption(args, "-o");
-        var endpointId = GetOption(args, "--endpoint-id") ?? GetOption(args, "-e");
+        var speakerProfileId = GetOption(args, "--speaker-profile-id") ?? GetOption(args, "-s");
 
         if (output is not null)
         {
             Console.WriteLine($"Synthesizing to {output} ...");
-            await TextToSpeech.SynthesizeToWavAsync(text, output, voice, endpointId);
+            await TextToSpeech.SynthesizeToWavAsync(text, output, voice, speakerProfileId);
             Console.WriteLine($"Saved to {output}");
         }
         else
         {
             Console.WriteLine("Speaking ...");
-            await TextToSpeech.SpeakAsync(text, voice, endpointId);
+            await TextToSpeech.SpeakAsync(text, voice, speakerProfileId);
             Console.WriteLine("Done.");
         }
     }
@@ -108,7 +108,7 @@ class Program
             Usage:
               dotnet run -- stt [--file <path.wav>]
               dotnet run -- tts --text "Hello" [--output <path.wav>] [--voice <name>]
-                               [--endpoint-id <id>]
+                               [--speaker-profile-id <id>]
               dotnet run -- voices [--locale <locale>]
 
             Commands:
@@ -117,13 +117,13 @@ class Program
               voices    List available neural voices for a locale (default: en-US)
 
             Options:
-              --endpoint-id   Custom Neural Voice endpoint ID
-                              (or set AZURE_SPEECH_ENDPOINT_ID env var)
+              --speaker-profile-id   Personal Voice speaker profile ID
+                                     (or set AZURE_SPEECH_SPEAKER_PROFILE_ID env var)
 
             Environment:
-              AZURE_SPEECH_KEY           Your Azure Speech subscription key
-              AZURE_SPEECH_REGION        Your Azure Speech region (e.g., eastus)
-              AZURE_SPEECH_ENDPOINT_ID   Custom Neural Voice endpoint (optional)
+              AZURE_SPEECH_KEY                  Your Azure Speech subscription key
+              AZURE_SPEECH_REGION               Your Azure Speech region (e.g., eastus)
+              AZURE_SPEECH_SPEAKER_PROFILE_ID   Personal Voice speaker profile ID (optional)
 
               Set these in environment variables or in a .env file.
             """);
