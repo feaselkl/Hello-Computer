@@ -13,15 +13,25 @@ tab_mic, tab_upload = st.tabs(["Record from Microphone", "Upload WAV File"])
 
 # ── Microphone tab ──────────────────────────────────────────────────────────
 with tab_mic:
-    st.write("Click the microphone icon, speak, then click again to stop.")
+    st.write(
+        "Click the microphone icon, **wait for it to turn red**, then speak. "
+        "Recording auto-stops after three seconds of silence, or click the icon again to stop."
+    )
     audio_bytes = audio_recorder(
         text="",
         recording_color="#e74c3c",
         neutral_color="#6c757d",
         pause_threshold=3.0,
+        key="stt_mic_recorder",
     )
 
-    if audio_bytes:
+    # The audio_recorder widget occasionally emits a tiny near-empty WAV when
+    # a click races the mic-permission lifecycle -- onClicked can flip through
+    # start->stop before setupMic resolves. Those clips aren't real recordings,
+    # so drop them silently and let the user try again.
+    MIN_AUDIO_BYTES = 4000
+
+    if audio_bytes and len(audio_bytes) >= MIN_AUDIO_BYTES:
         st.audio(audio_bytes, format="audio/wav")
 
         audio_hash = hashlib.md5(audio_bytes).hexdigest()
@@ -32,11 +42,16 @@ with tab_mic:
                     text = transcribe_from_wav_bytes(audio_bytes)
                     st.session_state["last_mic_hash"] = audio_hash
                     st.session_state["last_mic_text"] = text
+                    st.session_state.pop("last_mic_error", None)
                 except RuntimeError as e:
-                    st.error(f"Transcription failed: {e}")
+                    # Record the hash so reruns don't retry the same bad audio.
+                    st.session_state["last_mic_hash"] = audio_hash
                     st.session_state["last_mic_text"] = None
+                    st.session_state["last_mic_error"] = str(e)
 
-        if st.session_state.get("last_mic_text"):
+        if st.session_state.get("last_mic_error"):
+            st.error(f"Transcription failed: {st.session_state['last_mic_error']}")
+        elif st.session_state.get("last_mic_text"):
             st.success(st.session_state["last_mic_text"])
 
 # ── Upload tab ──────────────────────────────────────────────────────────────

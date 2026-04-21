@@ -9,6 +9,7 @@ dependencies = [
     "streamlit",
     "audio-recorder-streamlit",
     "python-dotenv",
+    "pyyaml",
 ]
 
 [project.scripts]

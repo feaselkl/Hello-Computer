@@ -55,7 +55,7 @@
 				<section data-background-image="presentation/assets/background/motivation.jpg" data-background-opacity="0.2">
 					<h3>Motivation</h3>
 
-					<p>Your users want to talk to your app. They want it to talk back. They want it to understand them in any language. Azure AI Speech makes all of this possible -- and you do not need an AI background to use it.</p>
+					<p>Your users want to talk to your app. They want it to talk back. They want it to understand them in any language. Azure AI Speech makes all of this possible, and you do not need an AI background to use it.</p>
 
 					<p>This talk is for <strong>application developers</strong> who want to add speech capabilities to .NET or Python applications using Azure.</p>
 				</section>
@@ -69,7 +69,6 @@
 						<li>Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -77,10 +76,10 @@
 				</section>
 
 				<!-- Getting Started -->
-				<section data-background-image="presentation/assets/background/dotnet.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/monkey-thinking.jpg" data-background-opacity="0.2">
 					<h3>What is Azure AI Speech?</h3>
 
-					<p>A cloud service in the Azure AI Foundry suite that handles all things speech:</p>
+					<p>A cloud service in the Microsoft Foundry suite that handles all things speech:</p>
 
 					<ul>
 						<li>Speech-to-text and text-to-speech</li>
@@ -92,7 +91,7 @@
 					<p>One service, one subscription key, and SDKs for .NET, Python, Java, C++, and more.</p>
 				</section>
 
-				<section data-background-image="presentation/assets/background/dotnet.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/repetition.jpg" data-background-opacity="0.2">
 					<h3>The SDK Pattern</h3>
 
 					<p>Every operation follows the same three-step pattern:</p>
@@ -106,7 +105,7 @@
 					<p>Once you learn this pattern for one feature, every other feature works the same way.</p>
 				</section>
 
-				<section data-background-image="presentation/assets/background/dotnet.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
 					<h3>Setting Up the SDK</h3>
 
 					<div class="container">
@@ -142,7 +141,6 @@ config = speechsdk.SpeechConfig(
 						<li>Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -159,12 +157,12 @@ config = speechsdk.SpeechConfig(
 						<li>Real-time transcription from a microphone or audio stream</li>
 						<li>Batch transcription of pre-recorded audio files</li>
 						<li>Support for 100+ languages and regional dialects</li>
-						<li>Speaker diarization -- figuring out <em>who</em> said what in a multi-speaker recording</li>
+						<li>Speaker diarization: figure out <em>who</em> said what in a multi-speaker recording</li>
 					</ul>
 				</section>
 
-				<section data-background-image="presentation/assets/background/microphone.jpg" data-background-opacity="0.2">
-					<h3>Speech to Text -- In Code</h3>
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Speech to Text in Code</h3>
 
 					<pre><code class="csharp">// C# -- the Python version follows the same pattern
 using var audioConfig =
@@ -206,7 +204,6 @@ uv run streamlit run app.py</code></pre>
 						<li class="active">Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -223,12 +220,12 @@ uv run streamlit run app.py</code></pre>
 						<li>Hundreds of AI-generated neural voices across many languages</li>
 						<li>Prebuilt, multilingual, and custom voice options</li>
 						<li>Multiple audio output formats (WAV, MP3, OGG, and more)</li>
-						<li>SSML -- an XML markup language for fine-grained control over how text is spoken</li>
+						<li>SSML: an XML markup language for fine-grained control over how text is spoken</li>
 					</ul>
 				</section>
 
-				<section data-background-image="presentation/assets/background/speaker.jpg" data-background-opacity="0.2">
-					<h3>Text to Speech -- In Code</h3>
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Text to Speech in Code</h3>
 
 					<pre><code class="csharp">// C# -- the Python version follows the same pattern
 config.SpeechSynthesisVoiceName =
@@ -242,7 +239,7 @@ await synthesizer.SpeakTextAsync("Hello, Computer!");</code></pre>
 					<p>Use <code>AudioConfig.FromDefaultSpeakerOutput()</code> for live playback, <code>FromWavFileOutput()</code> to save a file, or pass <code>null</code> to get raw audio bytes for a web app.</p>
 				</section>
 
-				<section data-background-image="presentation/assets/background/speaker.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
 					<h3>Using SSML</h3>
 
 					<p>SSML (Speech Synthesis Markup Language) gives you fine-grained control over how text is spoken:</p>
@@ -283,7 +280,6 @@ uv run python cli.py tts --text "Hello, Computer!"
 						<li>Text to Speech</li>
 						<li class="active">Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -294,12 +290,12 @@ uv run python cli.py tts --text "Hello, Computer!"
 				<section data-background-image="presentation/assets/background/globe.jpg" data-background-opacity="0.2">
 					<h3>Multi-Lingual Speech Translation</h3>
 
-					<p>Translate spoken audio from one language to another -- in real time. The output can be text or synthesized speech.</p>
+					<p>Translate, in real time, spoken audio from one language to another. The output can be text or synthesized speech.</p>
 
 					<p>This is not speech-to-text followed by machine translation. The service is optimized for spoken language, handling conversational nuances that text translators miss.</p>
 				</section>
 
-				<section data-background-image="presentation/assets/background/globe.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/chinese-text.jpg" data-background-opacity="0.2">
 					<h3>Translation in Action: Chinese and English</h3>
 
 					<p>Imagine a customer support app that handles calls in Mandarin and English without a bilingual agent.</p>
@@ -312,10 +308,10 @@ uv run python cli.py tts --text "Hello, Computer!"
 					</ul>
 				</section>
 
-				<section data-background-image="presentation/assets/background/globe.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/open-books.jpg" data-background-opacity="0.2">
 					<h3>Setting Up Translation</h3>
 
-					<p>Translation uses <code>TranslationRecognizer</code> instead of <code>SpeechRecognizer</code> -- same three-step pattern, different class:</p>
+					<p>Translation uses <code>TranslationRecognizer</code> instead of <code>SpeechRecognizer</code>. Otherwise, it's the same three-step pattern with a different class:</p>
 
 					<ol>
 						<li>Create a <strong>Translation Configuration</strong> with your subscription key</li>
@@ -340,7 +336,6 @@ uv run python cli.py tts --text "Hello, Computer!"
 						<li>Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li class="active">Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -348,10 +343,10 @@ uv run python cli.py tts --text "Hello, Computer!"
 				</section>
 
 				<!-- Analyze Speech -->
-				<section data-background-image="presentation/assets/background/analysis.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/audit.jpg" data-background-opacity="0.2">
 					<h3>Analyze Speech</h3>
 
-					<p>Go beyond transcription. Azure AI Speech can score <em>how well</em> someone speaks, not just <em>what</em> they say.</p>
+					<p>Azure AI Speech can score <em>how well</em> someone speaks, not just <em>what</em> they say.</p>
 
 					<p>Where developers use this today:</p>
 
@@ -363,7 +358,7 @@ uv run python cli.py tts --text "Hello, Computer!"
 					</ul>
 				</section>
 
-				<section data-background-image="presentation/assets/background/analysis.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/checklist.jpg" data-background-opacity="0.2">
 					<h3>Pronunciation Assessment</h3>
 
 					<p>The pronunciation assessment feature evaluates:</p>
@@ -391,106 +386,6 @@ uv run python cli.py tts --text "Hello, Computer!"
 						<li>Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li class="active">Custom Neural Voice</li>
-						<li>Speech + Language Models</li>
-						<li>Whisper vs AI Speech</li>
-						<li>Pricing</li>
-					</ol>
-				</section>
-
-				<!-- Custom Neural Voice -->
-				<section data-background-image="presentation/assets/background/voice.jpg" data-background-opacity="0.2">
-					<h3>Custom Neural Voice</h3>
-
-					<p>The prebuilt voices are good. But what if your product needs its own voice -- one that sounds like your brand, not like everyone else's?</p>
-
-					<p>Custom Neural Voice lets you train a voice model on recorded audio. Use cases:</p>
-
-					<ul>
-						<li>Brand identity -- a distinctive voice for your product</li>
-						<li>Accessibility -- voices tailored to specific user needs</li>
-						<li>Consistency -- the same voice across every touchpoint</li>
-					</ul>
-				</section>
-
-				<section data-background-image="presentation/assets/background/voice.jpg" data-background-opacity="0.2">
-					<h3>Building a Custom Neural Voice</h3>
-
-					<p>Azure offers <strong>Lite</strong> (quick evaluation) and <strong>Pro</strong> (production-grade) tiers. The Lite process:</p>
-
-					<ol>
-						<li><strong>Record</strong> training audio with a consistent speaker</li>
-						<li><strong>Prepare</strong> transcripts matching the recordings</li>
-						<li><strong>Upload</strong> audio and transcripts to Azure AI Foundry</li>
-						<li><strong>Train</strong> the model on your data</li>
-						<li><strong>Deploy</strong> and use the voice in your TTS applications</li>
-					</ol>
-
-					<p>Pro uses larger datasets and longer training for higher quality output.</p>
-				</section>
-
-				<section data-background-image="presentation/assets/background/voice.jpg" data-background-opacity="0.2">
-					<h3>CNV Lite -- Upload and Train</h3>
-
-					<!-- TODO: Replace with screenshots from Azure AI Foundry -->
-					<p><em>Screenshot: Uploading audio samples and transcripts in Azure AI Foundry.</em></p>
-
-					<p><em>Screenshot: Training status page showing model progress.</em></p>
-				</section>
-
-				<section data-background-image="presentation/assets/background/voice.jpg" data-background-opacity="0.2">
-					<h3>CNV Lite -- Deploy and Test</h3>
-
-					<!-- TODO: Replace with screenshots from Azure AI Foundry -->
-					<p><em>Screenshot: Deploying the trained voice model to an endpoint.</em></p>
-
-					<p><em>Screenshot: Testing the custom voice in the Azure AI Foundry playground.</em></p>
-				</section>
-
-				<section data-background-image="presentation/assets/background/voice.jpg" data-background-opacity="0.2">
-					<h3>Using Personal Voice in Code</h3>
-
-					<p>Once created, you get a <strong>speaker profile ID</strong>. Use it with SSML and a base model voice:</p>
-
-					<pre><code class="csharp">var ssml = @"&lt;speak version='1.0'
-  xmlns='http://www.w3.org/2001/10/synthesis'
-  xmlns:mstts='http://www.w3.org/2001/mstts'
-  xml:lang='en-US'&gt;
-  &lt;voice name='DragonLatestNeural'&gt;
-    &lt;mstts:ttsembedding
-      speakerProfileId='your-speaker-profile-id'&gt;
-      Hello from my personal voice!
-    &lt;/mstts:ttsembedding&gt;
-  &lt;/voice&gt;&lt;/speak&gt;";
-await synthesizer.SpeakSsmlAsync(ssml);</code></pre>
-
-					<p>Set <code>AZURE_SPEECH_SPEAKER_PROFILE_ID</code> in your <code>.env</code> file, or pass <code>--speaker-profile-id</code> on the CLI.</p>
-				</section>
-
-				<section data-background-image="presentation/assets/background/demo.jpg" data-background-opacity="0.2">
-					<h3>Demo Time</h3>
-
-					<p>Using a Personal Voice with our demo apps.</p>
-
-					<pre><code class="bash"># .NET -- personal voice
-dotnet run -- tts --text "Hello from my personal voice!" \
-    --speaker-profile-id &lt;id&gt;
-
-# Python -- personal voice
-uv run python cli.py tts --text "Hello from my personal voice!" \
-    --speaker-profile-id &lt;id&gt;</code></pre>
-				</section>
-
-				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
-					<h3>Agenda</h3>
-
-					<ol>
-						<li>Getting Started</li>
-						<li>Speech to Text</li>
-						<li>Text to Speech</li>
-						<li>Multi-Lingual Speech Translation</li>
-						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li class="active">Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -498,7 +393,7 @@ uv run python cli.py tts --text "Hello from my personal voice!" \
 				</section>
 
 				<!-- Speech + Language Models -->
-				<section data-background-image="presentation/assets/background/chatbot.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/robot.jpg" data-background-opacity="0.2">
 					<h3>Speech + Language Models</h3>
 
 					<p>Speech services become much more powerful when combined with a language model. Instead of just transcribing or speaking, your app can <em>understand</em> and <em>respond</em>.</p>
@@ -507,15 +402,15 @@ uv run python cli.py tts --text "Hello from my personal voice!" \
 
 					<ol>
 						<li><strong>Listen</strong> -- capture audio and transcribe with Speech-to-Text</li>
-						<li><strong>Think</strong> -- send the transcription to a language model via Azure AI Foundry</li>
+						<li><strong>Think</strong> -- send the transcription to a language model via Microsoft Foundry</li>
 						<li><strong>Speak</strong> -- convert the model's response to audio with Text-to-Speech</li>
 					</ol>
 				</section>
 
-				<section data-background-image="presentation/assets/background/chatbot.jpg" data-background-opacity="0.2">
-					<h3>Connecting to Azure AI Foundry</h3>
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Connecting to Microsoft Foundry</h3>
 
-					<p>Azure AI Foundry hosts language models (GPT-4o, etc.) behind an OpenAI-compatible API. The standard <code>openai</code> Python package works directly:</p>
+					<p>Microsoft Foundry hosts language models (GPT-5.4, etc.) behind an OpenAI-compatible API. The standard <code>openai</code> Python package works directly:</p>
 
 					<pre><code class="python">from openai import OpenAI
 
@@ -551,7 +446,6 @@ uv run streamlit run app.py</code></pre>
 						<li>Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li class="active">Whisper vs AI Speech</li>
 						<li>Pricing</li>
@@ -559,7 +453,7 @@ uv run streamlit run app.py</code></pre>
 				</section>
 
 				<!-- Whisper vs AI Speech -->
-				<section data-background-image="presentation/assets/background/comparison.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/choices.jpg" data-background-opacity="0.2">
 					<h3>Whisper vs Azure AI Speech</h3>
 
 					<p>Now that we have seen what Azure AI Speech can do, how does it compare to OpenAI's Whisper?</p>
@@ -567,7 +461,7 @@ uv run streamlit run app.py</code></pre>
 					<p>Whisper is an open-source speech recognition model. It handles one thing well: speech-to-text. Azure AI Speech is a full platform.</p>
 				</section>
 
-				<section data-background-image="presentation/assets/background/comparison.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/flexible.jpg" data-background-opacity="0.2">
 					<h3>When to Choose Which</h3>
 
 					<p><strong>Choose Whisper</strong> when you need cost-effective transcription, want to run models locally, or only need speech-to-text.</p>
@@ -586,7 +480,6 @@ uv run streamlit run app.py</code></pre>
 						<li>Text to Speech</li>
 						<li>Multi-Lingual Speech Translation</li>
 						<li>Analyze Speech</li>
-						<li>Custom Neural Voice</li>
 						<li>Speech + Language Models</li>
 						<li>Whisper vs AI Speech</li>
 						<li class="active">Pricing</li>
@@ -594,7 +487,7 @@ uv run streamlit run app.py</code></pre>
 				</section>
 
 				<!-- Pricing -->
-				<section data-background-image="presentation/assets/background/money.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/coins.jpg" data-background-opacity="0.2">
 					<h3>Pricing</h3>
 
 					<p>Azure AI Speech uses a <strong>pay-as-you-go</strong> model with a generous free tier:</p>
@@ -606,11 +499,11 @@ uv run streamlit run app.py</code></pre>
 						<li>Speech-to-text: ~$1 per audio hour</li>
 						<li>Text-to-speech: ~$16 per 1M characters (neural)</li>
 						<li>Speech translation: ~$2.50 per audio hour</li>
-						<li>Custom Neural Voice: training and hosting costs vary</li>
+						<li>Custom Neural Voice: training and hosting costs vary (but will be expensive)</li>
 					</ul>
 				</section>
 
-				<section data-background-image="presentation/assets/background/money.jpg" data-background-opacity="0.2">
+				<section data-background-image="presentation/assets/background/coins-stacked.jpg" data-background-opacity="0.2">
 					<h3>Cost Optimization Tips</h3>
 
 					<ul>

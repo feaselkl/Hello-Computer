@@ -24,6 +24,14 @@
                        href="/TextToSpeech">Text to Speech</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Translation" ? "active" : "")"
+                       href="/Translation">Translation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/PronunciationAssessment" ? "active" : "")"
+                       href="/PronunciationAssessment">Pronunciation</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Chat" ? "active" : "")"
                        href="/Chat">Chat with AI</a>
                 </li>

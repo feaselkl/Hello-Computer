@@ -5,12 +5,20 @@
 }
 
 <h2>Speech to Text</h2>
-<p>Upload a WAV file to transcribe it using Azure AI Speech.</p>
+<p>Record from your microphone or upload a WAV file to transcribe it using Azure AI Speech.</p>
 
 <form method="post" enctype="multipart/form-data">
     <div class="mb-3">
-        <label for="wavFile" class="form-label">WAV file</label>
-        <input type="file" class="form-control" id="wavFile" name="wavFile" accept=".wav" required />
+        <label class="form-label">Microphone</label>
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <button type="button" id="recordBtn" class="btn btn-outline-secondary">Record from Microphone</button>
+            <span id="recordStatus" class="text-muted small"></span>
+        </div>
+        <audio id="recordPreview" controls class="w-100"></audio>
+    </div>
+    <div class="mb-3">
+        <label for="wavFile" class="form-label">WAV file (or leave this and use the recording above)</label>
+        <input type="file" class="form-control" id="wavFile" name="wavFile" accept=".wav" />
     </div>
     <button type="submit" class="btn btn-primary">Transcribe</button>
 </form>
@@ -27,4 +35,17 @@
     <div class="alert alert-danger status">
         <strong>Error:</strong> @Model.Error
     </div>
+}
+
+@section Scripts {
+    <script src="~/js/mic-recorder.js"></script>
+    <script>
+        attachRecorderUi({
+            buttonId: "recordBtn",
+            statusId: "recordStatus",
+            previewId: "recordPreview",
+            fileInputId: "wavFile",
+            fileName: "mic-recording.wav"
+        });
+    </script>
 }

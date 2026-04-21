@@ -27,6 +27,8 @@ uv sync
 
 ## CLI Usage
 
+The CLI covers speech-to-text and text-to-speech. Translation and pronunciation assessment are demonstrated through the Streamlit dashboard.
+
 Speech-to-text from your microphone:
 
 ```bash
@@ -71,28 +73,42 @@ You can also set `AZURE_SPEECH_SPEAKER_PROFILE_ID` in your `.env` file instead o
 uv run streamlit run app.py
 ```
 
-This opens a browser with three pages:
+This opens a browser with five pages:
 
 - **Speech to Text** -- record from your microphone or upload a WAV file to transcribe
 - **Text to Speech** -- type text, choose a voice, and play the synthesized audio
+- **Multi-Lingual Speech Translation** -- translate spoken audio from one language to many; optionally speak the translations back
+- **Pronunciation Assessment** -- read a reference sentence aloud and see a score breakdown with word-by-word error tracking
 - **Chat with AI** -- speak into your microphone, send the transcription to an Azure AI Foundry language model, and hear the response spoken back
+
+### Notes on specific pages
+
+**Translation:** the source language picker defaults to Mandarin (`zh-CN`) and the target to English to match the slide deck. Pick any number of target languages; when "Also speak the translation" is checked, each translation is synthesized using a default neural voice for that language.
+
+**Pronunciation Assessment:** reference sentences are loaded from [code/samples/pronunciation_inputs.yaml](../samples/pronunciation_inputs.yaml) so both the Python and .NET demos share the same prompts. Pick a sample from the dropdown or choose "-- Custom text --" to enter your own. Scores include pronunciation, accuracy, fluency, completeness, and prosody (en-US only). Word-by-word chips are color-coded by accuracy, with dedicated colors for omissions, insertions, break issues, and monotone detection. A raw JSON expander shows the full Azure response.
 
 ## Project Structure
 
 ```
 code/python/
-  pyproject.toml          Project config and dependencies
-  .env.example            Template for Azure credentials
-  cli.py                  Command-line interface
-  app.py                  Streamlit entry point
+  pyproject.toml                    Project config and dependencies
+  .env.example                      Template for Azure credentials
+  cli.py                            Command-line interface (stt, tts)
+  app.py                            Streamlit entry point
   pages/
-    1_Speech_to_Text.py   STT demo page
-    2_Text_to_Speech.py   TTS demo page
-    3_Chat_with_AI.py     STT -> LLM -> TTS demo page
+    1_Speech_to_Text.py             STT demo page (mic + WAV)
+    2_Text_to_Speech.py             TTS demo page
+    3_Multilingual_Speech.py        Translation demo page (mic + WAV)
+    4_Pronunciation_Assessment.py   Pronunciation scoring (mic + WAV)
+    5_Chat_with_AI.py               STT -> LLM -> TTS demo page
   speech_lib/
-    __init__.py            Public API
-    config.py              Azure SDK configuration
-    stt.py                 Speech-to-text functions
-    tts.py                 Text-to-speech functions
-    llm.py                 Azure AI Foundry chat completions
+    __init__.py                     Public API re-exports
+    config.py                       Azure SDK configuration
+    stt.py                          Speech-to-text functions
+    tts.py                          Text-to-speech functions
+    translate.py                    Translation functions and default voices
+    pronunciation.py                Pronunciation assessment + sample loader
+    llm.py                          Azure AI Foundry chat completions
 ```
+
+Reference samples used by the pronunciation page live at `../samples/pronunciation_inputs.yaml` relative to this directory.

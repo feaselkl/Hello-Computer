@@ -1,0 +1,183 @@
+@page
+@model PronunciationAssessmentModel
+@{
+    ViewData["Title"] = "Pronunciation Assessment";
+}
+
+<h2>Pronunciation Assessment</h2>
+<p>Read a reference sentence aloud and see a score breakdown with word-by-word error tracking.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="sampleTitle" class="form-label">Reference sample</label>
+        <select class="form-select" id="sampleTitle" name="sampleTitle" onchange="this.form.submit()">
+            @foreach (var sample in Model.Samples)
+            {
+                <option value="@sample.Title" selected="@(sample.Title == Model.SelectedTitle)">@sample.Title</option>
+            }
+            <option value="@PronunciationAssessmentModel.CustomOption" selected="@(Model.SelectedTitle == PronunciationAssessmentModel.CustomOption)">
+                -- Custom text --
+            </option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="referenceText" class="form-label">Reference text</label>
+        <textarea class="form-control" id="referenceText" name="referenceText" rows="3"
+                  @(Model.SelectedTitle == PronunciationAssessmentModel.CustomOption ? "" : "readonly")>@Model.ReferenceText</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="language" class="form-label">Language</label>
+        <select class="form-select" id="language" name="language"
+                @(Model.SelectedTitle == PronunciationAssessmentModel.CustomOption ? "" : "disabled")>
+            @foreach (var code in PronunciationAssessmentModel.SupportedLanguages)
+            {
+                <option value="@code" selected="@(code == Model.Language)">@code</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Microphone</label>
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <button type="button" id="recordBtn" class="btn btn-outline-secondary">Record from Microphone</button>
+            <span id="recordStatus" class="text-muted small"></span>
+        </div>
+        <audio id="recordPreview" controls class="w-100"></audio>
+    </div>
+    <div class="mb-3">
+        <label for="wavFile" class="form-label">WAV file (or leave this and use the recording above)</label>
+        <input type="file" class="form-control" id="wavFile" name="wavFile" accept=".wav" />
+    </div>
+    <button type="submit" name="action" value="assess" class="btn btn-primary">Assess pronunciation</button>
+</form>
+
+@if (Model.Error != null)
+{
+    <div class="alert alert-danger status">
+        <strong>Error:</strong> @Model.Error
+    </div>
+}
+
+@if (Model.Outcome != null)
+{
+    <hr class="my-4" />
+
+    @if (!string.IsNullOrEmpty(Model.Outcome.RecognizedText))
+    {
+        <div class="alert alert-info">
+            <strong>Recognized speech:</strong> @Model.Outcome.RecognizedText
+        </div>
+    }
+
+    <h4>Scores</h4>
+    <div class="row g-2 mb-3">
+        @foreach (var (label, score) in new (string, double?)[] {
+            ("Pronunciation", Model.Outcome.PronunciationScore),
+            ("Accuracy", Model.Outcome.AccuracyScore),
+            ("Fluency", Model.Outcome.FluencyScore),
+            ("Completeness", Model.Outcome.CompletenessScore),
+            ("Prosody", Model.Outcome.ProsodyScore),
+        })
+        {
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-body py-2">
+                        <div class="text-muted small">@label</div>
+                        <div class="fs-4 fw-bold">@(score.HasValue ? score.Value.ToString("F1") : "--")</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h4>Word-by-word breakdown</h4>
+    <div style="line-height:2.4;">
+        @foreach (var w in Model.Outcome.Words)
+        {
+            var bg = PronunciationAssessmentModel.WordBackground(w);
+            <span style="background:@bg;padding:4px 10px;margin:2px;border-radius:4px;display:inline-block;text-align:center;">
+                <strong>@w.Word</strong>
+                @if (w.AccuracyScore.HasValue)
+                {
+                    <br /><small>@w.AccuracyScore.Value.ToString("F0")</small>
+                }
+                @if (!string.IsNullOrEmpty(w.ErrorType) && w.ErrorType != "None")
+                {
+                    <br /><small><em>@w.ErrorType</em></small>
+                }
+            </span>
+        }
+    </div>
+    <div class="mt-2">
+        <small class="text-muted">Legend:</small>
+        <span style="background:#d4edda;padding:2px 8px;margin:2px;border-radius:4px;font-size:0.85em;">Good (&ge;80)</span>
+        <span style="background:#fff3cd;padding:2px 8px;margin:2px;border-radius:4px;font-size:0.85em;">Fair (60-79)</span>
+        <span style="background:#f8d7da;padding:2px 8px;margin:2px;border-radius:4px;font-size:0.85em;">Poor (&lt;60)</span>
+        <span style="background:#f5c2c7;padding:2px 8px;margin:2px;border-radius:4px;font-size:0.85em;">Omission/Insertion</span>
+        <span style="background:#ffe5b4;padding:2px 8px;margin:2px;border-radius:4px;font-size:0.85em;">Break issue</span>
+    </div>
+
+    var flagged = Model.Outcome.Words.Where(w => !string.IsNullOrEmpty(w.ErrorType) && w.ErrorType != "None").ToList();
+    <h4 class="mt-4">Errors detected</h4>
+    @if (flagged.Count == 0)
+    {
+        <div class="alert alert-success">No pronunciation errors detected.</div>
+    }
+    else
+    {
+        var counts = flagged.GroupBy(w => w.ErrorType).Select(g => $"{g.Key}: {g.Count()}");
+        <p>@string.Join(" -- ", counts)</p>
+        <details>
+            <summary>All flagged words (@flagged.Count)</summary>
+            <ul>
+                @foreach (var w in flagged)
+                {
+                    var s = w.AccuracyScore.HasValue ? w.AccuracyScore.Value.ToString("F0") : "--";
+                    <li><code>@w.Word</code> -- @w.ErrorType (accuracy: @s)</li>
+                }
+            </ul>
+        </details>
+    }
+
+    @if (Model.Outcome.Words.Any(w => w.Phonemes.Count > 0))
+    {
+        <details class="mt-3">
+            <summary>Phoneme-level detail</summary>
+            <div class="mt-2">
+                @foreach (var w in Model.Outcome.Words.Where(w => w.Phonemes.Count > 0))
+                {
+                    <div class="mb-2">
+                        <strong>@w.Word</strong>
+                        <div style="line-height:2;">
+                            @foreach (var p in w.Phonemes)
+                            {
+                                var pbg = PronunciationAssessmentModel.ScoreColor(p.AccuracyScore);
+                                var ps = p.AccuracyScore.HasValue ? p.AccuracyScore.Value.ToString("F0") : "--";
+                                <span style="background:@pbg;padding:3px 6px;margin:2px;border-radius:3px;font-family:monospace;">
+                                    @p.Phoneme <small>(@ps)</small>
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </details>
+    }
+
+    <details class="mt-3">
+        <summary>Raw JSON</summary>
+        <pre class="mt-2 p-2 bg-light" style="max-height:400px;overflow:auto;"><code>@Model.Outcome.RawJson</code></pre>
+    </details>
+}
+
+@section Scripts {
+    <script src="~/js/mic-recorder.js"></script>
+    <script>
+        attachRecorderUi({
+            buttonId: "recordBtn",
+            statusId: "recordStatus",
+            previewId: "recordPreview",
+            fileInputId: "wavFile",
+            fileName: "mic-recording.wav"
+        });
+    </script>
+}

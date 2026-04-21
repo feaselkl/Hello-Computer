@@ -1,0 +1,35 @@
+# Pronunciation assessment reference samples.
+# Consumed by the Streamlit and .NET demos.
+
+samples:
+  - title: Rescheduling a Conference
+    language: en-US
+    text: The conference has been rescheduled to next Thursday, but attendees who registered early will still receive their materials on time.
+
+  - title: Research Experiment
+    language: en-US
+    text: Although the experiment initially failed, the research team discovered something far more valuable than what they had originally set out to prove.
+
+  - title: Blue Folder
+    language: en-US
+    text: Could you pass me the blue folder on the top shelf? I think the quarterly report is tucked inside it somewhere.
+
+  - title: Committee Decision
+    language: en-US
+    text: After years of debate, the committee finally reached a unanimous decision, though not everyone walked away entirely satisfied with the outcome.
+
+  - title: The Old Lighthouse
+    language: en-US
+    text: The old lighthouse stood at the edge of the cliff, weathered by decades of storms, yet somehow still guiding ships safely to shore.
+
+  - title: Returning a Book
+    language: en-US
+    text: Wait, you're telling me she drove all the way to Seattle just to return a library book? That's either remarkable dedication or remarkably poor planning.
+
+  - title: Short Business Phrase
+    language: en-US
+    text: Thank you for calling. How may I help you today?
+
+  - title: Numbers and Dates
+    language: en-US
+    text: The meeting is scheduled for April twenty-first, two thousand twenty-six, at three-thirty in the afternoon.

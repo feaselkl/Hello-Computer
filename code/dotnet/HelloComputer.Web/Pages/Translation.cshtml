@@ -1,0 +1,100 @@
+@page
+@model TranslationModel
+@{
+    ViewData["Title"] = "Multi-Lingual Speech Translation";
+}
+
+<h2>Multi-Lingual Speech Translation</h2>
+<p>Upload a WAV file and translate spoken audio into one or more target languages.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="sourceLanguage" class="form-label">Source language (spoken)</label>
+            <select class="form-select" id="sourceLanguage" name="sourceLanguage">
+                @foreach (var (label, code) in Model.SourceLanguages)
+                {
+                    <option value="@code" selected="@(code == Model.SourceLanguage)">@label</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="targetLanguages" class="form-label">Target language(s) -- hold Ctrl/Cmd to pick more than one</label>
+            <select class="form-select" id="targetLanguages" name="targetLanguages" multiple size="6" required>
+                @foreach (var (label, code) in Model.TargetLanguagesCatalog)
+                {
+                    <option value="@code" selected="@(Model.TargetLanguages.Contains(code))">@label</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="speakTranslation" name="speakTranslation" value="true"
+               checked="@Model.SpeakTranslation" />
+        <label class="form-check-label" for="speakTranslation">
+            Also speak the translation (speech-to-speech)
+        </label>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Microphone</label>
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <button type="button" id="recordBtn" class="btn btn-outline-secondary">Record from Microphone</button>
+            <span id="recordStatus" class="text-muted small"></span>
+        </div>
+        <audio id="recordPreview" controls class="w-100"></audio>
+    </div>
+    <div class="mb-3">
+        <label for="wavFile" class="form-label">WAV file (or leave this and use the recording above)</label>
+        <input type="file" class="form-control" id="wavFile" name="wavFile" accept=".wav" />
+    </div>
+    <button type="submit" class="btn btn-primary">Translate</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.RecognizedText))
+{
+    <div class="alert alert-info status">
+        <strong>Recognized source:</strong> @Model.RecognizedText
+    </div>
+}
+
+@if (Model.Translations.Count > 0)
+{
+    <div class="status">
+        <h4>Translations</h4>
+        @foreach (var pair in Model.Translations)
+        {
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h6 class="card-title mb-1">@pair.Key</h6>
+                    <p class="card-text mb-2">@pair.Value</p>
+                    @if (Model.TranslationAudio.TryGetValue(pair.Key, out var audioBase64))
+                    {
+                        <audio controls>
+                            <source src="data:audio/wav;base64,@audioBase64" type="audio/wav" />
+                        </audio>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (Model.Error != null)
+{
+    <div class="alert alert-danger status">
+        <strong>Error:</strong> @Model.Error
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/mic-recorder.js"></script>
+    <script>
+        attachRecorderUi({
+            buttonId: "recordBtn",
+            statusId: "recordStatus",
+            previewId: "recordPreview",
+            fileInputId: "wavFile",
+            fileName: "mic-recording.wav"
+        });
+    </script>
+}
