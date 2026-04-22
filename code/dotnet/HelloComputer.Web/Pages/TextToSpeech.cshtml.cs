@@ -7,7 +7,7 @@ namespace HelloComputer.Web.Pages;
 public class TextToSpeechModel : PageModel
 {
     public List<VoiceOption> Voices { get; set; } = [];
-    public string Text { get; set; } = "Hello, Computer! This is Azure AI Speech.";
+    public string Text { get; set; } = "Hello, Computer! This is Azure Speech.";
     public string VoiceName { get; set; } = "en-US-JennyNeural";
     public string? SpeakerProfileId { get; set; }
     public string? AudioBase64 { get; set; }

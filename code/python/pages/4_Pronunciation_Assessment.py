@@ -9,7 +9,7 @@ load_dotenv()
 
 st.header("Pronunciation Assessment")
 st.write(
-    "Read a reference sentence out loud and Azure AI Speech will score your "
+    "Read a reference sentence out loud and Azure Speech will score your "
     "pronunciation, fluency, completeness, and prosody -- with a word-by-word breakdown."
 )
 

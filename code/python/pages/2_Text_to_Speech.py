@@ -48,7 +48,7 @@ speaker_profile_id = speaker_profile_id.strip() or None
 # ── Text input and synthesis ────────────────────────────────────────────────
 text = st.text_area(
     "Text to speak",
-    value="Hello, Computer! This is Azure AI Speech.",
+    value="Hello, Computer! This is Azure Speech.",
     height=120,
 )
 

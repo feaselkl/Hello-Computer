@@ -1,7 +1,7 @@
 [project]
 name = "hello-computer"
 version = "0.1.0"
-description = "Azure AI Speech demos for the Hello, Computer presentation"
+description = "Azure Speech demos for the Hello, Computer presentation"
 requires-python = ">=3.12"
 dependencies = [
     "azure-cognitiveservices-speech",

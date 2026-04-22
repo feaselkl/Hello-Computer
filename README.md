@@ -4,7 +4,7 @@ This repository provides the supporting code for my presentation entitled [Hello
 
 ## What's in the Box
 
-Two parallel demo tracks -- Python and .NET -- covering the same scenarios so you can follow along in the language you prefer:
+Two parallel demo tracks (Python and .NET) covering the same scenarios so you can follow along in the language you prefer:
 
 | Demo | What it shows | Python | .NET |
 | --- | --- | --- | --- |
@@ -22,7 +22,7 @@ Both web surfaces record directly from the browser microphone in addition to acc
 
 See [code/python/README.md](code/python/README.md) for full setup and usage. The Python track includes a CLI for speech-to-text / text-to-speech and a five-page Streamlit dashboard.
 
-**Requirements:** Python 3.12+, [uv](https://docs.astral.sh/uv/), an Azure AI Speech resource. For the Chat with AI demo: an Azure OpenAI deployment.
+**Requirements:** Python 3.12+, [uv](https://docs.astral.sh/uv/), an Azure Speech resource. For the Chat with AI demo: an Azure OpenAI deployment.
 
 ```bash
 cd code/python
@@ -45,7 +45,7 @@ uv run streamlit run app.py
 
 See [code/dotnet/README.md](code/dotnet/README.md) for full setup and usage. The .NET track includes a CLI for speech-to-text / text-to-speech / voice listing and a Razor Pages web app with five demos (all of which record from the browser microphone).
 
-**Requirements:** .NET 9.0 SDK, an Azure AI Speech resource. For the Chat with AI demo: an Azure OpenAI deployment.
+**Requirements:** .NET 9.0 SDK, an Azure Speech resource. For the Chat with AI demo: an Azure OpenAI deployment.
 
 ```bash
 cd code/dotnet
@@ -73,4 +73,4 @@ Microsoft has [a series of voices available](https://learn.microsoft.com/azure/a
 
 ### Browser Microphone Note
 
-The .NET web app and Python Streamlit pages capture mic audio directly in the browser. Browsers only allow `getUserMedia` on `localhost` or over HTTPS -- if you present from a remote URL, terminate TLS in front of the app.
+The .NET web app and Python Streamlit pages capture mic audio directly in the browser. Browsers only allow `getUserMedia` on `localhost` or over HTTPS. If you are trying to access the resource from a remote URL, terminate TLS in front of the app.

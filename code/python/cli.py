@@ -1,4 +1,4 @@
-"""Command-line interface for Azure AI Speech demos."""
+"""Command-line interface for Azure Speech demos."""
 import argparse
 import sys
 
@@ -44,7 +44,7 @@ def main() -> None:
     load_dotenv()
 
     parser = argparse.ArgumentParser(
-        description="Azure AI Speech CLI demos"
+        description="Azure Speech CLI demos"
     )
     sub = parser.add_subparsers(dest="command", required=True)
 

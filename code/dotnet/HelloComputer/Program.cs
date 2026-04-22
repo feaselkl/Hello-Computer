@@ -103,7 +103,7 @@ class Program
     private static void PrintUsage()
     {
         Console.WriteLine("""
-            Hello, Computer -- Azure AI Speech CLI (.NET)
+            Hello, Computer -- Azure Speech CLI (.NET)
 
             Usage:
               dotnet run -- stt [--file <path.wav>]

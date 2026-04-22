@@ -7,7 +7,7 @@ st.set_page_config(
 )
 
 st.title("Hello, Computer")
-st.subheader("Azure AI Speech Service Demos")
+st.subheader("Azure Speech Service Demos")
 
 st.markdown(
     """

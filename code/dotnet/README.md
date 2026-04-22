@@ -1,11 +1,11 @@
 # Hello, Computer -- .NET Demos
 
-Azure AI Speech demos for the "Hello, Computer: An Introduction to Azure Speech" presentation.
+Azure Speech demos for the "Hello, Computer: An Introduction to Azure Speech" presentation.
 
 ## Prerequisites
 
 - .NET 9.0 SDK or later
-- An Azure AI Speech resource ([create one here](https://portal.azure.com/#create/Microsoft.CognitiveServicesSpeechServices))
+- An Azure Speech resource ([create one here](https://portal.azure.com/#create/Microsoft.CognitiveServicesSpeechServices))
 - For the Chat with AI demo: an Azure OpenAI deployment ([create one here](https://portal.azure.com/#create/Microsoft.CognitiveServicesOpenAI))
 - For microphone demos: a working system microphone
 - On Linux: `sudo apt-get install libssl-dev libasound2-dev` (required by the Azure Speech SDK)
