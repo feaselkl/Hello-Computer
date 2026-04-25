@@ -107,7 +107,7 @@ def translate_from_wav_bytes(
 # Suggested default voices for synthesizing translated output.
 # Keys are the target language codes used with add_target_language.
 DEFAULT_TARGET_VOICES: dict[str, str] = {
-    "en": "en-US-JennyNeural",
+    "en": "en-US-Phoebe:DragonHDLatestNeural",
     "es": "es-ES-ElviraNeural",
     "fr": "fr-FR-DeniseNeural",
     "de": "de-DE-KatjaNeural",

@@ -13,7 +13,9 @@ st.write(
 )
 
 # ── Voice selection ────────────────────────────────────────────────────────
+DEFAULT_VOICE = "en-US-Phoebe:DragonHDLatestNeural"
 DEFAULT_VOICES = [
+    {"name": DEFAULT_VOICE, "local_name": "Phoebe Dragon HD Latest", "gender": "Female"},
     {"name": "en-US-JennyNeural", "local_name": "Jenny", "gender": "Female"},
     {"name": "en-US-GuyNeural", "local_name": "Guy", "gender": "Male"},
     {"name": "en-US-AriaNeural", "local_name": "Aria", "gender": "Female"},
@@ -36,7 +38,12 @@ voice_options = {
     for v in voices
 }
 
-selected_label = st.selectbox("Response voice", options=list(voice_options.keys()))
+option_labels = list(voice_options.keys())
+default_index = next(
+    (i for i, label in enumerate(option_labels) if voice_options[label] == DEFAULT_VOICE),
+    0,
+)
+selected_label = st.selectbox("Response voice", options=option_labels, index=default_index)
 voice_name = voice_options[selected_label]
 
 # ── System prompt ──────────────────────────────────────────────────────────
